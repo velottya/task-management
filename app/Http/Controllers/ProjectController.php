@@ -28,14 +28,14 @@ class ProjectController extends Controller
     $validator = Validator::make($request->all(), [
         'name' => 'required|string',
         'description' => 'nullable|string',
-        'created_by' => 'required|integer', // Pastikan untuk memvalidasi created_by jika diperlukan
+        'created_by' => 'required|integer',
     ]);
 
     if ($validator->fails()) {
         return response()->json($validator->errors(), 400);
     }
 
-    // Cek apakah created_by ada di request
+
     $data = $request->all();
     if (!isset($data['created_by'])) {
         return response()->json(['error' => 'created_by is required'], 400);
@@ -72,8 +72,7 @@ class ProjectController extends Controller
         return response()->json(['message' => 'Project not found'], 404);
     }
 
-    // Hapus entri terkait jika ada
-    $project->tasks()->delete(); // Sekarang ini akan berfungsi
+    $project->tasks()->delete();
 
     $project->delete();
     return response()->json(null, 204);
